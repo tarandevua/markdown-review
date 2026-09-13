@@ -64,15 +64,16 @@ export default function MarkdownForm({ slug, markdown, initialValues = {} }: { s
   return (
     <>
       <div className="review-toolbar">
-        <div>
-          <strong>{answered}</strong> fields answered
+        <div className="progress-summary">
+          <span className="progress-icon" aria-hidden="true">{answered}</span>
+          <span><strong>Review in progress</strong>{answered} {answered === 1 ? "field" : "fields"} answered</span>
         </div>
         <div className="toolbar-actions">
           <button onClick={saveRevision} disabled={saving}>{saving ? "Saving…" : "Save revision"}</button>
           <a className="button secondary" href={`/api/documents/${slug}/download`}>Download completed .md</a>
         </div>
       </div>
-      {message ? <div className="notice">{message}</div> : null}
+      {message ? <div className={`notice${message.startsWith("Saved") ? "" : " error"}`} role="status">{message}</div> : null}
       <article className="markdown-body">
         <FieldContext.Provider value={fieldContext}>
           <ReactMarkdown

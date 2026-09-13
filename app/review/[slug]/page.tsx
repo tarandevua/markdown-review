@@ -13,11 +13,11 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
     <section className="review-page">
       <header className="review-header">
         <div><div className="eyebrow">Shared review</div><h1>{doc.title}</h1></div>
-        <div className="muted">{revisions.length ? `${revisions.length} revision${revisions.length === 1 ? "" : "s"}` : "No revisions yet"}</div>
+        <div className="revision-count">{revisions.length ? `${revisions.length} revision${revisions.length === 1 ? "" : "s"}` : "No revisions yet"}</div>
       </header>
       <MarkdownForm slug={slug} markdown={doc.sourceMarkdown} initialValues={latest?.values ?? {}} />
       {revisions.length ? (
-        <aside className="revision-list"><h2>Revision history</h2>{revisions.map((r) => <div key={r.id}>Revision {r.version} · {new Date(r.createdAt).toLocaleString()}</div>)}</aside>
+        <aside className="revision-list"><h2>Revision history</h2>{revisions.map((r) => <div className="revision-entry" key={r.id}>Revision {r.version} · {new Date(r.createdAt).toLocaleString()}</div>)}</aside>
       ) : null}
     </section>
   );
