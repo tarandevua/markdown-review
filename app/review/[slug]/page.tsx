@@ -1,10 +1,41 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import MarkdownForm from "@/components/MarkdownForm";
 import { getDocumentBySlug, getRevisions } from "@/lib/store";
 
-export default async function ReviewPage({ params }: { params: Promise<{ slug: string }> }) {
+type ReviewPageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+const getReviewDocument = cache(getDocumentBySlug);
+
+export async function generateMetadata({ params }: ReviewPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const doc = await getDocumentBySlug(slug);
+  const doc = await getReviewDocument(slug);
+
+  if (!doc) return {};
+
+  const description = `Review and complete ${doc.title}.`;
+
+  return {
+    title: doc.title,
+    description,
+    openGraph: {
+      title: doc.title,
+      description,
+    },
+    twitter: {
+      card: "summary",
+      title: doc.title,
+      description,
+    },
+  };
+}
+
+export default async function ReviewPage({ params }: ReviewPageProps) {
+  const { slug } = await params;
+  const doc = await getReviewDocument(slug);
   if (!doc) notFound();
   const revisions = await getRevisions(doc.id);
   const latest = revisions[0];

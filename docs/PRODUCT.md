@@ -9,6 +9,7 @@ Markdown Review converts a Markdown document containing explicit review blanks a
 3. App parses editable patterns and previews the document.
 4. App creates an unguessable review URL.
 5. Reviewer opens the URL without needing a Markdown editor.
+   The browser title and share-preview metadata identify the current document.
 6. Reviewer fills text fields, checkboxes, and decision groups.
 7. Reviewer saves progress or submits a revision.
 8. App stores structured values and generated Markdown.
