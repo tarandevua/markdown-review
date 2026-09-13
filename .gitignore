@@ -2,6 +2,7 @@ node_modules
 .next
 out/
 .env*
+!.env.example
 data/documents.json
 data/revisions.json
 .DS_Store

@@ -2,23 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import crypto from "crypto";
 import type { RevisionValues } from "@/lib/markdown/types";
-
-export type DocumentRecord = {
-  id: string;
-  slug: string;
-  title: string;
-  sourceMarkdown: string;
-  createdAt: string;
-};
-
-export type RevisionRecord = {
-  id: string;
-  documentId: string;
-  version: number;
-  values: RevisionValues;
-  renderedMarkdown: string;
-  createdAt: string;
-};
+import type { DocumentRecord, RevisionRecord, StoreRepository } from "./types";
 
 const dataDir = path.join(process.cwd(), "data");
 const documentsFile = path.join(dataDir, "documents.json");
@@ -34,7 +18,7 @@ async function writeJson(file: string, value: unknown) {
   await fs.writeFile(file, JSON.stringify(value, null, 2), "utf8");
 }
 
-export async function createDocument(title: string, sourceMarkdown: string) {
+async function createDocument(title: string, sourceMarkdown: string) {
   const docs = await readJson<DocumentRecord[]>(documentsFile, []);
   const doc: DocumentRecord = {
     id: crypto.randomUUID(),
@@ -48,12 +32,12 @@ export async function createDocument(title: string, sourceMarkdown: string) {
   return doc;
 }
 
-export async function getDocumentBySlug(slug: string) {
+async function getDocumentBySlug(slug: string) {
   const docs = await readJson<DocumentRecord[]>(documentsFile, []);
   return docs.find((d) => d.slug === slug) ?? null;
 }
 
-export async function createRevision(documentId: string, values: RevisionValues, renderedMarkdown: string) {
+async function createRevision(documentId: string, values: RevisionValues, renderedMarkdown: string) {
   const revisions = await readJson<RevisionRecord[]>(revisionsFile, []);
   const version = Math.max(0, ...revisions.filter((r) => r.documentId === documentId).map((r) => r.version)) + 1;
   const revision: RevisionRecord = {
@@ -64,7 +48,14 @@ export async function createRevision(documentId: string, values: RevisionValues,
   return revision;
 }
 
-export async function getRevisions(documentId: string) {
+async function getRevisions(documentId: string) {
   const revisions = await readJson<RevisionRecord[]>(revisionsFile, []);
   return revisions.filter((r) => r.documentId === documentId).sort((a, b) => b.version - a.version);
 }
+
+export const fileStore: StoreRepository = {
+  createDocument,
+  getDocumentBySlug,
+  createRevision,
+  getRevisions,
+};

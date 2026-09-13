@@ -18,8 +18,9 @@ Inputs are untrusted:
 8. Rate-limit public save/load endpoints in production.
 9. Add payload/file-size limits.
 10. Do not expose server filesystem paths in responses.
-11. Production JSON/file storage must not be treated as multi-user-safe.
-12. Secrets belong in environment variables; never commit them.
+11. Production persistence must use the Supabase repository; JSON/file storage is local-development-only.
+12. Secrets belong in environment variables; never commit them. `SUPABASE_SECRET_KEY` (or the legacy service-role key) is server-only and must never use a `NEXT_PUBLIC_` prefix.
+13. Keep Row Level Security enabled even when server routes use a privileged key, and expose no public table policies unless the access model explicitly changes.
 
 ## Share URLs
 An unguessable URL is a bearer secret. Anyone with the URL can access what it grants. Production should support:

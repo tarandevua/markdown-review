@@ -27,27 +27,7 @@ Acceptance criteria:
 - explicit submit creates immutable revision
 - reload restores draft or latest submitted values predictably
 
-### P0.4 Validate production build
-Acceptance criteria:
-```bash
-npm install
-npm run typecheck
-npm run build
-```
-all succeed.
-
-## P1 — Production persistence
-
-### P1.1 Repository interfaces
-Decouple routes/components from file storage.
-
-### P1.2 Supabase/Postgres adapter
-Suggested schema:
-- documents
-- drafts
-- revisions
-
-### P1.3 Share-link controls
+## P1 — Share-link controls
 - cryptographically strong token
 - expiry
 - optional password
@@ -99,3 +79,7 @@ Do not implement e-signature claims as part of ordinary approval workflow.
 - legacy blanks/checkboxes/decision patterns recognized
 - GFM table rendering supported
 - file-backed documents/revisions provided
+- repository interface added; routes and pages are decoupled from file storage
+- Supabase/Postgres production adapter added for documents and append-only revisions
+- idempotent importer added for existing local JSON documents and revisions
+- production dependency install, typecheck, tests, and Next.js build validated on 2026-09-13

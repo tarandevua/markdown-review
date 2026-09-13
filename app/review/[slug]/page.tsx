@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import MarkdownForm from "@/components/MarkdownForm";
-import { getDocumentBySlug, getRevisions } from "@/lib/store/fileStore";
+import { getDocumentBySlug, getRevisions } from "@/lib/store";
 
 export default async function ReviewPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

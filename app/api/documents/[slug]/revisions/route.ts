@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createRevision, getDocumentBySlug } from "@/lib/store/fileStore";
+import { createRevision, getDocumentBySlug } from "@/lib/store";
 import { applyValuesToMarkdown } from "@/lib/markdown/serialize";
 import type { RevisionValues } from "@/lib/markdown/types";
 

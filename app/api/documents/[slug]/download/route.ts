@@ -1,4 +1,4 @@
-import { getDocumentBySlug, getRevisions } from "@/lib/store/fileStore";
+import { getDocumentBySlug, getRevisions } from "@/lib/store";
 
 export async function GET(_: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

@@ -48,7 +48,7 @@ Responsibilities:
 Serialization must use the same field identity contract as parsing.
 
 ### Persistence (`lib/store`)
-Current MVP: local JSON files.
+Current implementation: Supabase/Postgres in hosted environments, with local JSON files as a zero-configuration development fallback.
 
 Target interface:
 
@@ -66,7 +66,7 @@ interface RevisionRepository {
 }
 ```
 
-Production adapter: Supabase/Postgres.
+Production adapter: Supabase/Postgres through a server-only repository. Vercel deployments fail closed when Supabase credentials are absent; they never fall back to the read-only deployment filesystem.
 
 ### API routes (`app/api`)
 Responsibilities:
@@ -98,6 +98,8 @@ Markdown and reviewer input are untrusted.
 See `SECURITY.md`.
 
 ## Production storage recommendation
+The accepted production store is Supabase/Postgres. The server uses `SUPABASE_URL` and `SUPABASE_SECRET_KEY`; the secret key must never be exposed to browser code. The legacy `SUPABASE_SERVICE_ROLE_KEY` is accepted during migration.
+
 Tables:
 - `documents`
 - `document_shares` or share fields on documents for MVP
